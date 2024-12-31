@@ -2,10 +2,16 @@ import express from "express";
 import Course from "../dataBase/courseSchema.js";
 import Teacher from "../dataBase/teacherSchema.js";
 import Student from "../dataBase/studentSchema.js";
+import mongoose from "mongoose";
 
 export let studentRoute = express.Router();
 studentRoute.put("/teacher", async (req, res) => {
-  const { name, email, courses, id } = req.body;
+  let { name, email, courses, id } = req.body;
+
+  if (!id) {
+    // Generate a new ObjectId if id is not provided
+    id = new mongoose.Types.ObjectId();
+  }
 
   try {
     const teacher = await Teacher.findByIdAndUpdate(
@@ -14,16 +20,19 @@ studentRoute.put("/teacher", async (req, res) => {
       { new: true, upsert: true } // Create if not exists
     );
 
-    res
-      .status(200)
-      .json({ message: "Teacher created/updated successfully", teacher });
+    res.status(200).json({ message: "Teacher created/updated successfully", teacher });
   } catch (error) {
     res.status(500).json({ message: "Error creating/updating teacher", error });
   }
 });
 
 studentRoute.put("/student", async (req, res) => {
-  const { name, email, courses, id } = req.body;
+  let { name, email, courses, id } = req.body;
+
+  if (!id) {
+    // Generate a new ObjectId if id is not provided
+    id = new mongoose.Types.ObjectId();
+  }
 
   try {
     const student = await Student.findByIdAndUpdate(
@@ -32,27 +41,28 @@ studentRoute.put("/student", async (req, res) => {
       { new: true, upsert: true } // Create if not exists
     );
 
-    res
-      .status(200)
-      .json({ message: "Student created/updated successfully", student });
+    res.status(200).json({ message: "Student created/updated successfully", student });
   } catch (error) {
     res.status(500).json({ message: "Error creating/updating student", error });
   }
 });
 
 studentRoute.put("/course", async (req, res) => {
-  const { title, description, duration, students, id } = req.body;
+  let { title, description, duration, students, id } = req.body;
+
+  if (!id) {
+    // Generate a new ObjectId if id is not provided
+    id = new mongoose.Types.ObjectId();
+  }
 
   try {
     const course = await Course.findByIdAndUpdate(
       id,
-      { title, description, duration },
+      { title, description, duration, students },
       { new: true, upsert: true } // Create if not exists
     );
 
-    res
-      .status(200)
-      .json({ message: "Course created/updated successfully", course });
+    res.status(200).json({ message: "Course created/updated successfully", course });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error creating/updating course", error });
