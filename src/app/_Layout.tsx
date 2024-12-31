@@ -8,6 +8,7 @@ export default function _Layout() {
     <Stack.Screen name='index'></Stack.Screen>
     <Stack.Screen name='Mangment'></Stack.Screen>
     <Stack.Screen name='Edit'></Stack.Screen>
+    <Stack.Screen name='Create'></Stack.Screen>
    </Stack>
   )
 }
